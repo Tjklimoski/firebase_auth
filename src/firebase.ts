@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 
 const app = initializeApp({
   apiKey: import.meta.env.VITE_FB_API_KEY,
@@ -9,3 +9,6 @@ const app = initializeApp({
   messagingSenderId: import.meta.env.VITE_FB_MESSAGING_SENDER_I,
   appId: import.meta.env.VITE_FB_APP_ID
 })
+
+export const auth = getAuth(app);
+export default app;
