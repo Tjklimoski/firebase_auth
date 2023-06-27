@@ -8,7 +8,7 @@ export default function SignUp() {
 
   return (
     <>
-      <Card style={{ minWidth: '400px' }}>
+      <Card style={{ width: '100%', maxWidth: '400px' }}>
         <Card.Body>
           <h2 className='text-center mb-4'>Sign Up</h2>
           <Form>
