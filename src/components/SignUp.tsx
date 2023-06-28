@@ -6,7 +6,7 @@ export default function SignUp() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
-  const { signup, user } = useAuth();
+  const { signup } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +26,6 @@ export default function SignUp() {
       setError(errorMessage);
     } finally {
       setLoading(false)
-      console.log('user: ', user)
     }
   }
 

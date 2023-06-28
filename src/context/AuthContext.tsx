@@ -19,6 +19,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
 
   function signup(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(auth, email, password)
@@ -30,7 +31,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     //observer from firebase to get info on current signed-in user.
     //fired when the user's signed in state changes.
     //the cb func is passed a user object by firebase
-    const unsubscribe = onAuthStateChanged(auth, setUser)
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      console.log('onAuthStateChange RAN')
+      setUser(user)
+      //just because loading is set to false doesn't mean there was a user. it just means firebased finished it's initial check for one.
+      setLoading(false)
+    })
 
     return unsubscribe;
   }, [])
@@ -42,7 +48,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
