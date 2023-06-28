@@ -1,11 +1,12 @@
 import { ReactNode, createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, User, UserCredential } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User, UserCredential } from "firebase/auth";
 
 interface AuthContextValue {
   user: User | null
   signup: (email: string, password: string) => Promise<UserCredential>
   login: (email: string, password: string) => Promise<UserCredential>
+  logout: () => Promise<void>
 }
 
 interface AuthProviderProps {
@@ -31,6 +32,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return signInWithEmailAndPassword(auth, email, password)
   }
 
+  function logout() {
+    return signOut(auth)
+  }
+
   //this is like an event listener, we only want it to be setup once.
   useEffect(() => {
     //observer from firebase to get info on current signed-in user.
@@ -48,7 +53,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value = {
     user,
     signup,
-    login
+    login,
+    logout
   }
 
   return (
