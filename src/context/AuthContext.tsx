@@ -32,7 +32,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     //fired when the user's signed in state changes.
     //the cb func is passed a user object by firebase
     const unsubscribe = onAuthStateChanged(auth, user => {
-      console.log('onAuthStateChange RAN')
       setUser(user)
       //just because loading is set to false doesn't mean there was a user. it just means firebased finished it's initial check for one.
       setLoading(false)
