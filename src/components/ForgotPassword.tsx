@@ -18,7 +18,7 @@ export default function ForgotPassword() {
       setError('')
       setLoading(true);
       await reset(emailRef.current.value)
-      navigate('/login')
+      navigate('/login?reset=true')
     } catch (err: any) {
       setError('Failed to reset your password');
     } finally {
