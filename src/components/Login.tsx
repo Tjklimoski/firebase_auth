@@ -12,7 +12,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const query = qs.parse(window.location.search.slice(1))
-  console.log(query)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
