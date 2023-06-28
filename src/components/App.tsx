@@ -6,6 +6,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import Update from "./Update";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import ForgotPassword from "./ForgotPassword";
 
 function App() {
 
@@ -14,8 +15,9 @@ function App() {
       <Container className="d-flex flex-column align-items-center justify-content-center vh-100">
         <Router>
           <Routes>
-            <Route path="/signup" element={<SignUp />}/>
-            <Route path="/login" element={<Login />}/>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
 
             {/* User must be logged in to access following routes: */}
             <Route element={<ProtectedRoutes/>}>
