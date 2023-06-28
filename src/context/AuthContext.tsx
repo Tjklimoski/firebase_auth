@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User, UserCredential } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, User, UserCredential, updateEmail, updatePassword } from "firebase/auth";
 
 interface AuthContextValue {
   user: User | null
@@ -8,6 +8,8 @@ interface AuthContextValue {
   login: (email: string, password: string) => Promise<UserCredential>
   logout: () => Promise<void>
   reset: (email: string) => Promise<void>
+  updateUserEmail: (email: string) => Promise<void>
+  updateUserPassword: (password: string) => Promise<void>
 }
 
 interface AuthProviderProps {
@@ -41,6 +43,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return sendPasswordResetEmail(auth, email)
   }
 
+  function updateUserEmail(email: string) {
+    if (user == null) return Promise.reject(new Error('user not found'));
+    return updateEmail(user, email)
+  }
+
+  function updateUserPassword(password: string) {
+    if (user == null) return Promise.reject(new Error('user not found'));
+    return updatePassword(user, password)
+  }
+
   //this is like an event listener, we only want it to be setup once.
   useEffect(() => {
     //observer from firebase to get info on current signed-in user.
@@ -60,7 +72,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     signup,
     login,
     logout,
-    reset
+    reset,
+    updateUserEmail,
+    updateUserPassword
   }
 
   return (
