@@ -1,10 +1,10 @@
 import { ReactNode, createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword, onAuthStateChanged, User as firebaseUser } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, User, UserCredential } from "firebase/auth";
 
 interface AuthContextValue {
-  user: firebaseUser | null
-  signup: (email: string, password: string) => void
+  user: User | null
+  signup: (email: string, password: string) => Promise<UserCredential>
 }
 
 interface AuthProviderProps {
@@ -18,9 +18,9 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<firebaseUser | null>(null)
+  const [user, setUser] = useState<User | null>(null)
 
-  function signup(email: string, password: string) {
+  function signup(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(auth, email, password)
     //we return the function's promise here, and in the client, where we call `signup`, is where we'll check for errors.
   }
