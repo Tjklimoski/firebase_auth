@@ -10,6 +10,7 @@ interface AuthContextValue {
   reset: (email: string) => Promise<void>
   updateUserEmail: (email: string) => Promise<void>
   updateUserPassword: (password: string) => Promise<void>
+  updateUserEmailAndPassword: (email: string, password: string) => Promise<void>
 }
 
 interface AuthProviderProps {
@@ -53,6 +54,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return updatePassword(user, password)
   }
 
+  async function updateUserEmailAndPassword(email: string, password: string) {
+    try {
+      await updateUserEmail(email)
+      await updateUserPassword(password);
+    } catch {
+      return Promise.reject()
+    } finally {
+      return Promise.resolve()
+    }
+  }
+
   //this is like an event listener, we only want it to be setup once.
   useEffect(() => {
     //observer from firebase to get info on current signed-in user.
@@ -74,7 +86,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     reset,
     updateUserEmail,
-    updateUserPassword
+    updateUserPassword,
+    updateUserEmailAndPassword
   }
 
   return (

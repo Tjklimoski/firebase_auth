@@ -7,7 +7,7 @@ export default function Update() {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordConfirmRef = useRef<HTMLInputElement>(null);
-  const { user } = useAuth();
+  const { user, updateUserEmail, updateUserPassword, updateUserEmailAndPassword } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -18,16 +18,22 @@ export default function Update() {
       return setError('Passwords do not match')
     }
 
-    // try {
-    //   setError('')
-    //   setLoading(true);
-    //   await signup(emailRef.current.value, passwordRef.current.value)
-    //   navigate('/');
-    // } catch (err: any) {
-    //   setError('Failed to create an account');
-    // } finally {
-    //   setLoading(false)
-    // }
+    try {
+      setLoading(true)
+      setError('')
+      if (emailRef?.current?.value && emailRef.current.value !== user?.email && passwordRef?.current?.value) {
+        await updateUserEmailAndPassword(emailRef.current.value, passwordRef.current.value)
+      } else if (emailRef?.current?.value && emailRef.current.value !== user?.email) {
+        await updateUserEmail(emailRef.current.value)
+      } else if (passwordRef?.current?.value) {
+        await updateUserPassword(passwordRef.current.value)
+      }
+      navigate('/')
+    } catch {
+      setError('Failed to update profile')
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
